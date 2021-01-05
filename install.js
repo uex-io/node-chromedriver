@@ -69,7 +69,9 @@ Promise.resolve()
     console.log(
       "Current existing msedgedriver binary is unavailable, proceding with download and extraction."
     );
-    return downloadFile().then(extractDownload);
+    return del(tmpPath + "/libc++.dylib")
+      .then(downloadFile)
+      .then(extractDownload);
   })
   .then(() => fixFilePermissions(tmpPath + "/libc++.dylib"))
   .then(() => copyIntoPlace(tmpPath, libPath))
@@ -101,7 +103,9 @@ function verifyIfChromedriverIsAvailableAndHasCorrectVersion() {
   const forceDownload =
     process.env.npm_config_edgechromiumdriver_force_download === "true" ||
     process.env.EDGECHROMIUMDRIVER_FORCE_DOWNLOAD === "true";
-  if (forceDownload) return false;
+  if (forceDownload) {
+    return false;
+  }
   console.log("msedgedriver binary exists. Validating...");
   const deferred = new Deferred();
   try {
