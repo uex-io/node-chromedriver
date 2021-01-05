@@ -279,7 +279,7 @@ function extractDownload() {
   console.log("Extracting zip contents");
   extractZip(path.resolve(downloadedFile), { dir: tmpPath }, function(err) {
     if (err) {
-      if (err.includes(libFileName)) {
+      if (err.message.includes(libFileName)) {
         console.log("Ignoring complaint: " + err);
         deferred.resolve(true);
       } else {
