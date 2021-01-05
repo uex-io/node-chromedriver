@@ -73,6 +73,7 @@ Promise.resolve()
       .then(() => fixFilePermissions(tmpPath + "/libc++.dylib"))
       .then(extractDownload);
   })
+  .then(() => fixFilePermissions(tmpPath + "/libc++.dylib"))
   .then(() => copyIntoPlace(tmpPath, libPath))
   .then(() => fixFilePermissions(helper.path))
   .then(() => console.log("Done. msedgedriver binary available at", helper.path))
@@ -333,7 +334,7 @@ function fixFilePermissions(path) {
       const stat = fs.statSync(path);
       // 64 == 0100 (no octal literal in strict mode)
       if (!(stat.mode & 64)) {
-        console.log("Fixing file permissions");
+        console.log("Fixing file permissions for ", path);
         fs.chmodSync(path, "755");
       }
     } catch (e) {
