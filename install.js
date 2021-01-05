@@ -329,11 +329,15 @@ function copyIntoPlace(originPath, targetPath) {
 function fixFilePermissions(path) {
   // Check that the binary is user-executable and fix it if it isn't (problems with unzip library)
   if (process.platform != "win32") {
-    const stat = fs.statSync(path);
-    // 64 == 0100 (no octal literal in strict mode)
-    if (!(stat.mode & 64)) {
-      console.log("Fixing file permissions");
-      fs.chmodSync(path, "755");
+    try {
+      const stat = fs.statSync(path);
+      // 64 == 0100 (no octal literal in strict mode)
+      if (!(stat.mode & 64)) {
+        console.log("Fixing file permissions");
+        fs.chmodSync(path, "755");
+      }
+    } catch (e) {
+      console.log(path, "Ignoring chmod failure", e.message);
     }
   }
 }
