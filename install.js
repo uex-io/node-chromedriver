@@ -69,9 +69,7 @@ Promise.resolve()
     console.log(
       "Current existing msedgedriver binary is unavailable, proceding with download and extraction."
     );
-    return downloadFile()
-      .then(() => fixFilePermissions(tmpPath + "/libc++.dylib"))
-      .then(extractDownload);
+    return downloadFile().then(extractDownload);
   })
   .then(() => fixFilePermissions(tmpPath + "/libc++.dylib"))
   .then(() => copyIntoPlace(tmpPath, libPath))
@@ -275,6 +273,9 @@ function extractDownload() {
     return Promise.resolve();
   }
   const deferred = new Deferred();
+
+  fixFilePermissions(tmpPath + "/libc++.dylib");
+
   console.log("Extracting zip contents");
   extractZip(path.resolve(downloadedFile), { dir: tmpPath }, function(err) {
     if (err) {
