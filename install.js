@@ -69,9 +69,7 @@ Promise.resolve()
     console.log(
       "Current existing msedgedriver binary is unavailable, proceding with download and extraction."
     );
-    return del(tmpPath + "/libc++.dylib")
-      .then(downloadFile)
-      .then(extractDownload);
+    return downloadFile().then(extractDownload);
   })
   .then(() => fixFilePermissions(tmpPath + "/libc++.dylib"))
   .then(() => copyIntoPlace(tmpPath, libPath))
