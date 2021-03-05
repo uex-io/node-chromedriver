@@ -231,7 +231,7 @@ function getLatestVersion(requestOptions) {
     if (err) {
       deferred.reject("Error with http(s) request: " + err);
     } else {
-      edgechromiumdriver_version = data.trim();
+      edgechromiumdriver_version = data.replace(/[^0-9.]/g, "");
       deferred.resolve(true);
     }
   });
